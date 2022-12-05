@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 class CustomTextField extends StatelessWidget {
   final String label;
   final String? hintText;
-  final IconData? prefixIcon;
-  final IconData? suffixIcon;
+  final Widget? prefixIcon;
+  final Widget? suffixIcon;
   final bool? disabledAutovalidate;
   final bool? obscureText;
+  final bool? enabled;
+  final String? errorText;
   final String? Function(String? value)? validator;
   final void Function(String? value)? onSaved;
+  final void Function(String?)? onChanged;
 
   const CustomTextField({
     super.key,
@@ -16,10 +19,13 @@ class CustomTextField extends StatelessWidget {
     this.prefixIcon,
     this.suffixIcon,
     this.hintText,
-    this.validator,
-    this.onSaved,
     this.disabledAutovalidate,
     this.obscureText = false,
+    this.enabled = true,
+    this.errorText,
+    this.validator,
+    this.onSaved,
+    this.onChanged,
   });
 
   @override
@@ -30,9 +36,11 @@ class CustomTextField extends StatelessWidget {
           ? null
           : AutovalidateMode.onUserInteraction,
       obscureText: obscureText ?? false,
+      onChanged: onChanged,
       onSaved: onSaved,
       validator: validator,
       decoration: InputDecoration(
+        errorText: errorText,
         floatingLabelStyle: TextStyle(
           color: Theme.of(context).primaryColor,
         ),
@@ -42,12 +50,9 @@ class CustomTextField extends StatelessWidget {
             color: Theme.of(context).primaryColor,
           ),
         ),
-        // enabled: true,
-        prefixIcon: Icon(
-          prefixIcon == null ? null : (prefixIcon),
-          color: Theme.of(context).primaryColor,
-        ),
-        suffixIcon: suffixIcon == null ? null : Icon(suffixIcon),
+        enabled: enabled ?? false,
+        prefixIcon: prefixIcon,
+        suffixIcon: suffixIcon,
         hintText: hintText,
       ),
       textAlignVertical: TextAlignVertical.center,

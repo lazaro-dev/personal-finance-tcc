@@ -17,11 +17,11 @@ class _WelcomePageState extends State<WelcomePage> {
     super.initState();
     authService.isLogged().then((bool value) {
       if (value) {
-        Timer(const Duration(seconds: 5), () {
+        Timer(const Duration(seconds: 3), () {
           Navigator.pushNamed(context, '/home');
         });
       } else {
-        Timer(const Duration(seconds: 5), () {
+        Timer(const Duration(seconds: 3), () {
           Navigator.pushNamed(context, '/login');
         });
       }
