@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:mobx/mobx.dart';
-import 'package:personal_finance_tcc/presenter/stores/auth/login_store.dart';
+import 'package:personal_finance_tcc/presenter/stores/auth/auth_store.dart';
 import 'package:personal_finance_tcc/presenter/widgets/custom_icon_button.dart';
 import 'package:personal_finance_tcc/presenter/widgets/custom_text_field.dart';
 import 'package:flutter_mobx/flutter_mobx.dart';
@@ -13,8 +13,8 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  // final AuthController authController = AuthController();
-  final LoginStore loginStore = LoginStore();
+  final AuthStore authStore = AuthStore();
+  ReactionDisposer? disposerAutorun;
 
   @override
   void initState() {
@@ -24,13 +24,14 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void dispose() {
     super.dispose();
+    disposerAutorun!();
   }
 
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    autorun(((_) {
-      if (loginStore.isLogged) {
+    disposerAutorun = autorun(((_) {
+      if (authStore.isLogged) {
         Navigator.of(context).pushReplacementNamed('/home');
       }
     }));
@@ -57,14 +58,14 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       Observer(builder: (_) {
                         return CustomTextField(
-                          enabled: !loginStore.formLogin.loadingSubmitted,
+                          enabled: !authStore.formLogin.loadingSubmitted,
                           label: 'Usuário',
                           prefixIcon: const CustomIconButton(
                             iconData: Icons.account_circle,
                           ),
-                          errorText: loginStore.formLogin.error.username,
+                          errorText: authStore.formLogin.error.username,
                           onChanged: (value) =>
-                              loginStore.formLogin.username = value ?? '',
+                              authStore.formLogin.username = value ?? '',
                         );
                       }),
                       const SizedBox(
@@ -72,22 +73,22 @@ class _LoginPageState extends State<LoginPage> {
                       ),
                       Observer(builder: (_) {
                         return CustomTextField(
-                          enabled: !loginStore.formLogin.loadingSubmitted,
+                          enabled: !authStore.formLogin.loadingSubmitted,
                           label: 'Senha',
                           prefixIcon: const CustomIconButton(
                             iconData: Icons.vpn_key,
                           ),
                           suffixIcon: CustomIconButton(
-                            iconData: !loginStore.formLogin.passwordVisibily
+                            iconData: !authStore.formLogin.passwordVisibily
                                 ? Icons.visibility
                                 : Icons.visibility_off,
                             onPressed:
-                                loginStore.formLogin.toggleVisibilityPassword,
+                                authStore.formLogin.toggleVisibilityPassword,
                           ),
-                          obscureText: !loginStore.formLogin.passwordVisibily,
-                          errorText: loginStore.formLogin.error.password,
+                          obscureText: !authStore.formLogin.passwordVisibily,
+                          errorText: authStore.formLogin.error.password,
                           onChanged: (value) =>
-                              loginStore.formLogin.password = value ?? '',
+                              authStore.formLogin.password = value ?? '',
                         );
                       }),
                       const SizedBox(
@@ -107,14 +108,8 @@ class _LoginPageState extends State<LoginPage> {
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
-                            onPressed: () {
-                              loginStore.formLogin.validateAll();
-
-                              if (!loginStore.formLogin.error.hasErrors) {
-                                loginStore.login();
-                              }
-                            },
-                            child: loginStore.formLogin.loadingSubmitted
+                            onPressed: authStore.login,
+                            child: authStore.formLogin.loadingSubmitted
                                 ? const CircularProgressIndicator(
                                     color: Colors.white,
                                   )

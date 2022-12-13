@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:personal_finance_tcc/presenter/controllers/auth_controller.dart';
+import 'package:personal_finance_tcc/presenter/stores/auth/auth_store.dart';
+import 'package:personal_finance_tcc/presenter/widgets/app_bar_custom/app_bar_custom.dart';
+import 'package:personal_finance_tcc/presenter/widgets/menu/menu_drawer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -9,15 +11,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final AuthController authController = AuthController();
+  final AuthStore authStore = AuthStore();
+
+  @override
+  void initState() {
+    super.initState();
+    // authStore.
+  }
+
 
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        drawer: MenuDrawer(),
+        // ignore: prefer_const_constructors
+        appBar: AppBarCustom(title: ''),
         resizeToAvoidBottomInset: false,
         body: Container(
-          margin: const EdgeInsets.fromLTRB(32, 0, 32, 32),
+          color: const Color.fromARGB(255, 245, 241, 241),
+          // padding: const EdgeInsets.fromLTRB(32, 10, 32, 10),
           child: Column(
             children: [
               Padding(
@@ -25,24 +38,8 @@ class _HomePageState extends State<HomePage> {
                     const EdgeInsets.symmetric(vertical: 16, horizontal: 2),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    const Text(
-                      'Home',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w900,
-                        fontSize: 32,
-                      ),
-                    ),
-                    IconButton(
-                      color: Colors.white,
-                      icon: const Icon(Icons.exit_to_app),
-                      onPressed: () {
-                        authController.logout();
-                        Navigator.of(context).pushReplacementNamed('/login');
-                      },
-                    ),
-                  ],
+                  // children: [
+                  // ],
                 ),
               ),
               // Expanded(child: Card(child: Padding,))
