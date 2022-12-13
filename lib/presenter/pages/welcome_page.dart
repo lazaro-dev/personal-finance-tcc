@@ -18,11 +18,11 @@ class _WelcomePageState extends State<WelcomePage> {
     authService.isLogged().then((bool value) {
       if (value) {
         Timer(const Duration(seconds: 3), () {
-          Navigator.pushNamed(context, '/home');
+          Navigator.pushReplacementNamed(context, '/home');
         });
       } else {
         Timer(const Duration(seconds: 3), () {
-          Navigator.pushNamed(context, '/login');
+          Navigator.pushReplacementNamed(context, '/login');
         });
       }
     });
@@ -32,7 +32,14 @@ class _WelcomePageState extends State<WelcomePage> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: Text('Bem vindo'),
+        child: Text(
+          'Bem vindo',
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.w900,
+            fontSize: 24,
+          ),
+        ),
       ),
     );
   }
