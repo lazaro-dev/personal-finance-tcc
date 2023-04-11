@@ -1,4 +1,6 @@
+import 'dart:io';
 import 'package:path/path.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:personal_finance_tcc/external/database/data/migration.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -14,9 +16,10 @@ class SqfliteData {
   Future<Database> get database async {
     if (_database != null) return _database!;
 
-    _database = await _getDatabase();
+    // _database = await _getDatabase();
 
-    return _database!;
+    return await _getDatabase();
+    // return _database!;
   }
 
   void _createDb(Database db, int newVersion) async {
@@ -31,8 +34,11 @@ class SqfliteData {
   }
 
   Future<Database> _getDatabase() async {
+    Directory documentsDirectory = await getApplicationDocumentsDirectory();
+    String path = join(documentsDirectory.path, _databaseName);
     return await openDatabase(
-      join(await getDatabasesPath(), _databaseName),
+      path,
+      // join(await getDatabasesPath(), _databaseName),
       onCreate: _createDb,
       version: _version,
     );

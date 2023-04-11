@@ -6,6 +6,8 @@ class DbService {
   static final DbService instance = DbService._init();
   DbService._init();
 
+  static Future<Database> get db async => await SqfliteData.instance.database;
+
   Future<List> select(
     String tableName,
     Model model, {
@@ -81,5 +83,11 @@ class DbService {
       where: where, //'$columnId = ?'
       whereArgs: whereArgs,
     );
+  }
+
+  Future<void> execute(String query) async {
+    final Database db = await SqfliteData.instance.database;
+
+    await db.execute(query);
   }
 }
