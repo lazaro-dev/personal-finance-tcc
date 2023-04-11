@@ -2,13 +2,25 @@ import 'package:personal_finance_tcc/external/database/db_service.dart';
 import 'package:personal_finance_tcc/presenter/models/account.dart';
 
 class AccountSeeder {
-  static void execute() async {
+  static Future<void> execute() async {
     final DbService dbService = DbService.instance;
 
-    final Account account = new Account();
+    final List<Account> accounts = [
+      Account(name: 'Nubank', balance: '0', accountTypeId: 1),
+      Account(name: 'Bradesco', balance: '0', accountTypeId: 2),
+    ];
 
-    // dbService.insert('account', account)
+    List<Future<dynamic>> funcs = [];
+    for (var accountType in accounts) {
+      funcs.add(dbService.insert(Account.table, accountType));
+    }
+
+    await Future.wait(funcs);
   }
 
-  static void reset() {}
+  static Future<void> reset() async {
+    final DbService dbService = DbService.instance;
+
+    await dbService.execute('DELETE FROM ${Account.table}');
+  }
 }
