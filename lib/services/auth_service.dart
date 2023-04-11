@@ -1,7 +1,7 @@
 import 'dart:convert';
 
 import 'package:personal_finance_tcc/helpers/local_store_service.dart';
-import 'package:personal_finance_tcc/presenter/models/User.dart';
+import 'package:personal_finance_tcc/presenter/models/user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AuthService {
@@ -29,13 +29,13 @@ class AuthService {
     return true;
   }
 
-  Future<User?> getUser() async {
+  getUser() async {
     final String? strUser = await LocalStoreHelper.instance.getString('user');
 
     if (strUser == null) return null;
 
     final jsonUser = json.decode(strUser);
 
-    return User.fromJson(jsonUser);
+    return User().fromJson(jsonUser);
   }
 }
