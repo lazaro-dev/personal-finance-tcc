@@ -18,7 +18,9 @@ class Migration {
         id INTEGER PRIMARY KEY AUTOINCREMENT, 
         name TEXT, 
         balance DECIMAL(10,2), 
+        institution_id INTEGER, 
         account_type_id INTEGER, 
+        FOREIGN KEY(institution_id) REFERENCES account_types(id),
         FOREIGN KEY(account_type_id) REFERENCES account_types(id)
        )''',
     '''CREATE TABLE institutions (
