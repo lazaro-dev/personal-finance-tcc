@@ -1,3 +1,5 @@
+import 'package:personal_finance_tcc/presenter/models/ports/model.dart';
+
 class InstitutionFields {
   static final List<String> values = [
     id,
@@ -10,7 +12,7 @@ class InstitutionFields {
   static const String image = 'image';
 }
 
-class Institution {
+class Institution extends Model<Institution> {
   static const String table = 'institutions';
 
   final int? id;
@@ -23,6 +25,7 @@ class Institution {
     this.image,
   });
 
+  @override
   Institution copy({
     int? id,
     String? name,
@@ -34,12 +37,14 @@ class Institution {
         image: image ?? this.image,
       );
 
-  static Institution fromJson(json) => Institution(
+  @override
+  Institution fromJson(json) => Institution(
         id: json[InstitutionFields.id] as int?,
         name: json[InstitutionFields.name] as String?,
         image: json[InstitutionFields.image] as String?,
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,

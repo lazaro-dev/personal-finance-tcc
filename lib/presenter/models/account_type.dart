@@ -1,3 +1,5 @@
+import 'package:personal_finance_tcc/presenter/models/ports/model.dart';
+
 class AccountTypeFields {
   static final List<String> values = [
     id,
@@ -10,7 +12,7 @@ class AccountTypeFields {
   static const String slug = 'slug';
 }
 
-class AccountType {
+class AccountType extends Model<AccountType> {
   static const String table = 'account_types';
 
   final int? id;
@@ -23,6 +25,7 @@ class AccountType {
     this.slug,
   });
 
+  @override
   AccountType copy({
     int? id,
     String? name,
@@ -34,12 +37,14 @@ class AccountType {
         slug: slug ?? this.slug,
       );
 
-  static AccountType fromJson(json) => AccountType(
+  @override
+  AccountType fromJson(json) => AccountType(
         id: json[AccountTypeFields.id] as int?,
         name: json[AccountTypeFields.name] as String?,
         slug: json[AccountTypeFields.slug] as String?,
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,

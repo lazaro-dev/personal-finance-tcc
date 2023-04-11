@@ -6,12 +6,14 @@ class AccountFields {
     name,
     balance,
     accountTypeId,
+    institutionId
   ];
 
   static const String id = 'id';
   static const String name = 'name';
   static const String balance = 'balance';
   static const String accountTypeId = 'account_type_id';
+  static const String institutionId = 'institution_id';
 }
 
 class Account extends Model<Account> {
@@ -21,12 +23,14 @@ class Account extends Model<Account> {
   final String? name;
   final String? balance;
   final int? accountTypeId;
+  final int? institutionId;
 
   Account({
     this.id,
     this.name,
     this.balance,
     this.accountTypeId,
+    this.institutionId,
   });
 
   @override
@@ -35,12 +39,14 @@ class Account extends Model<Account> {
     String? name,
     String? balance,
     int? accountTypeId,
+    int? institutionId,
   }) =>
       Account(
         id: id ?? this.id,
         name: name ?? this.name,
         balance: balance ?? this.balance,
         accountTypeId: accountTypeId ?? this.accountTypeId,
+        institutionId: institutionId ?? this.institutionId,
       );
 
   @override
@@ -49,6 +55,7 @@ class Account extends Model<Account> {
         name: json[AccountFields.name] as String?,
         balance: json[AccountFields.balance] as String?,
         accountTypeId: json[AccountFields.accountTypeId] as int?,
+        institutionId: json[AccountFields.institutionId] as int?,
       );
 
   @override
@@ -57,5 +64,6 @@ class Account extends Model<Account> {
         AccountFields.name: name,
         AccountFields.balance: balance,
         AccountFields.accountTypeId: accountTypeId,
+        AccountFields.institutionId: institutionId,
       };
 }

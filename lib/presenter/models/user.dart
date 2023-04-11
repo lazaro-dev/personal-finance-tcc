@@ -1,3 +1,5 @@
+import 'package:personal_finance_tcc/presenter/models/ports/model.dart';
+
 class UserFields {
   static final List<String> values = [
     id, name, username, email, phone, image, password
@@ -12,7 +14,7 @@ class UserFields {
   static const String password = 'password';
 }
 
-class User {
+class User extends Model<User> {
   static const String table = 'users';
 
   final int? id;
@@ -33,6 +35,7 @@ class User {
     this.password,
   });
 
+  @override
   User copy({
     int? id,
     String? name,
@@ -50,7 +53,8 @@ class User {
         image: image ?? this.image,
       );
 
-  static User fromJson(json) => User(
+  @override
+  User fromJson(json) => User(
         id: json[UserFields.id] as int?,
         name: json[UserFields.name] as String?,
         username: json[UserFields.username] as String?,
@@ -60,6 +64,7 @@ class User {
         password: json[UserFields.password] as String?,
       );
 
+  @override
   Map<String, dynamic> toJson() => {
         'id': id,
         'name': name,
